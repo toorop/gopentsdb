@@ -1,4 +1,4 @@
-package openstdb
+package gopentsdb
 
 import (
 	"bytes"
@@ -58,7 +58,6 @@ func NewClient(config ClientConfig) (client *Client, err error) {
 
 // Push pushes a slice of points to OpenSTDB
 func (c *Client) Push(points []Point) error {
-
 	JSONPoints, err := json.Marshal(points)
 	if err != nil {
 		return err
@@ -77,11 +76,11 @@ func (c *Client) Push(points []Point) error {
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {
-		return nil
+		return err
 	}
 	defer resp.Body.Close()
 
-	//println(resp.Status)
+	//println("HTTP Response", resp.Status)
 
 	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
 		body, err := ioutil.ReadAll(resp.Body)
@@ -90,6 +89,5 @@ func (c *Client) Push(points []Point) error {
 		}
 		return fmt.Errorf(string(body))
 	}
-
 	return nil
 }

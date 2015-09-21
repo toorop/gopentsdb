@@ -1,4 +1,4 @@
-package openstdb
+package gopentsdb
 
 // Point represent a "point" (really ?)
 type Point struct {
