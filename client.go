@@ -65,7 +65,7 @@ func (c *Client) Push(points []Point) error {
 
 	//println(string(JSONPoints))
 
-	req, err := http.NewRequest("POST", c.endpoint.String(), bytes.NewBuffer(JSONPoints))
+	req, err := http.NewRequest("POST", c.endpoint.String()+"/api/put", bytes.NewBuffer(JSONPoints))
 	if err != nil {
 		return err
 	}
