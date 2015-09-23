@@ -71,13 +71,13 @@ func NewTemporizedClient(config TemporizedClientConfig) (*TemporizedClient, erro
 func (c *TemporizedClient) Add(point Point) error {
 	c.container.add(point)
 	if c.maxPoints > 0 && uint(len(c.container.points)) >= c.maxPoints {
-		return c.push()
+		c.push()
 	}
 	return nil
 }
 
 // push current container points sto openstdb server
-func (c *TemporizedClient) push() (err error) {
+func (c *TemporizedClient) push() {
 	log.Println("On push")
 	if c.timer != nil {
 		c.timer.Stop()
@@ -86,17 +86,13 @@ func (c *TemporizedClient) push() (err error) {
 	points := c.container.points
 	c.container.points = []Point{}
 	c.container.Unlock()
+	log.Println("Nombre de points", len(points))
 	if len(points) > 0 {
-		err = c.client.Push(points)
-		log.Println(err)
-		if err != nil {
-			return err
+		if err := c.client.Push(points); err != nil {
+			log.Println(err)
 		}
 	}
 	c.timer = time.AfterFunc(time.Duration(c.period)*time.Second, func() {
-		if err := c.push(); err != nil {
-			log.Println("push error: ", err)
-		}
+		c.push()
 	})
-	return err
 }

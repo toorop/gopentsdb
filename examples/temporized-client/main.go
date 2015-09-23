@@ -23,7 +23,7 @@ func main() {
 		Period:    10,
 		MaxPoints: 0,
 		CConfig: &gopentsdb.ClientConfig{
-			Endpoint:           "",
+			Endpoint:           "https://opentsdb.iot.runabove.io",
 			Username:           "",
 			Password:           "",
 			InsecureSkipVerify: true,

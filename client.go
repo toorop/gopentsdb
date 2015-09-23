@@ -80,7 +80,7 @@ func (c *Client) Push(points []Point) error {
 	}
 	defer resp.Body.Close()
 
-	//println("HTTP Response", resp.Status)
+	println("HTTP Response", resp.Status)
 
 	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
 		body, err := ioutil.ReadAll(resp.Body)
