@@ -63,8 +63,6 @@ func (c *Client) Push(points []Point) error {
 		return err
 	}
 
-	//println(string(JSONPoints))
-
 	req, err := http.NewRequest("POST", c.endpoint.String()+"/api/put", bytes.NewBuffer(JSONPoints))
 	if err != nil {
 		return err
@@ -79,8 +77,6 @@ func (c *Client) Push(points []Point) error {
 		return err
 	}
 	defer resp.Body.Close()
-
-	println("HTTP Response", resp.Status)
 
 	if resp.StatusCode != http.StatusNoContent && resp.StatusCode != http.StatusOK {
 		body, err := ioutil.ReadAll(resp.Body)

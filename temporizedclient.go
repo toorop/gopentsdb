@@ -67,7 +67,7 @@ func NewTemporizedClient(config TemporizedClientConfig) (*TemporizedClient, erro
 	return tClient, nil
 }
 
-// Add add a new point to current container
+// Add adds a new point to the current container
 func (c *TemporizedClient) Add(point Point) error {
 	c.container.add(point)
 	if c.maxPoints > 0 && uint(len(c.container.points)) >= c.maxPoints {
@@ -76,9 +76,8 @@ func (c *TemporizedClient) Add(point Point) error {
 	return nil
 }
 
-// push current container points sto openstdb server
+// push current container points to openstdb server
 func (c *TemporizedClient) push() {
-	log.Println("On push")
 	if c.timer != nil {
 		c.timer.Stop()
 	}
@@ -86,7 +85,7 @@ func (c *TemporizedClient) push() {
 	points := c.container.points
 	c.container.points = []Point{}
 	c.container.Unlock()
-	log.Println("Nombre de points", len(points))
+
 	if len(points) > 0 {
 		if err := c.client.Push(points); err != nil {
 			log.Println(err)
